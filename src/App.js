@@ -1,22 +1,26 @@
 import React, {useState} from 'react';
-import Teammates from "./List.js";
+import Mate from "./List.js";
 import Form from "./Form.js";
 import './App.css';
 
 function App() {
   const [team, setTeam] = useState([]);
 
-  console.log(team)
+  const [member, memberToEdit] = useState(false);
+  const [newValue, setNewValue] = useState({})
 
-  const submitHandler = event =>{
-    event.preventDefault();
-    return(
-      <div>
-        <Form team={team} setTeam={setTeam} />
-      </div>
-    )
-      
-  };
+
+  function editMember(value){
+    const temp = team.map( mem => {
+      if(mem === newValue){
+        return value
+      }else{
+        return mem
+      }
+    })
+    setTeam(temp)
+  }
+
 
   // function changeState(){
   //   i
@@ -24,20 +28,9 @@ function App() {
   
   return (
     <div>
-      <Form team={team} setTeam={setTeam} />
+      <Form team={team} setTeam={setTeam} newValue={newValue} setNewValue={setNewValue} editMember={editMember} member={member} memberToEdit={memberToEdit}/>
       <h2>Teammates: </h2>
-        {team.map( mate => {
-            return (
-                <div>
-                    <p>Name: {mate.Name}</p>
-                    <p>Email: {mate.Email}</p>
-                    <p>Role: {mate.Role}</p>
-                    <form onSubmit={submitHandler}>
-                    <button type="submit">Edit</button>       
-                    </form>
-                </div>
-            )}
-        )}
+      <Mate prop={team} setNewValue={setNewValue} memberToEdit={memberToEdit} />      
     </div>
   );
 }

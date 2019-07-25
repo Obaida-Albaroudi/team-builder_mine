@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 
 const Form = (props) => {
@@ -8,11 +8,22 @@ const Form = (props) => {
         Role: ""
       });     
 
-      
+    useEffect(() => {
+        setState(props.newValue)},
+        [props.newValue])
+    
+    
 
     const submitHandler = event =>{
         event.preventDefault();
-        props.setTeam([...props.team, state])  
+        if(props.member === true){
+            props.editMember({...state, [event.target.name] : event.target.value})
+            props.memberToEdit(false)
+            console.log(props.member)
+
+        } else{
+            props.setTeam([...props.team, state]) 
+        }
       };
     
       const changeHandler = event => {
